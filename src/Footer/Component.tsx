@@ -18,9 +18,9 @@ export async function Footer() {
         <Link className="flex items-center" href="/">
           <picture>
             <img
-              alt="Payload Logo"
-              className="max-w-[6rem] invert-0"
-              src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/payload/src/admin/assets/images/payload-logo-light.svg"
+              alt="The Blue Man Logo"
+              className="max-w-[12rem] invert-0"
+              src="/TheBlueMan-Logo-Title-White.png"
             />
           </picture>
         </Link>
