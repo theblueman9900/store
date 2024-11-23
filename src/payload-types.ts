@@ -6,6 +6,32 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CartItems".
+ */
+export type CartItems =
+  | {
+      quantity?: number | null;
+      variant?: {
+        id?: string | null;
+        sku?: string | null;
+        price?: number | null;
+        compareAtPrice?: number | null;
+        stock?: number | null;
+        size?: {
+          title?: string | null;
+          value?: string | null;
+        };
+        color?: {
+          title?: string | null;
+          value?: string | null;
+        };
+      };
+      id?: string | null;
+    }[]
+  | null;
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
@@ -361,6 +387,13 @@ export interface Post {
 export interface User {
   id: string;
   name?: string | null;
+  roles?: ('admin' | 'customer')[] | null;
+  cart?: {
+    items?: CartItems;
+    createdOn?: string | null;
+    lastModified?: string | null;
+  };
+  skipSync?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -913,6 +946,41 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
+  cart?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              quantity?: T;
+              variant?:
+                | T
+                | {
+                    id?: T;
+                    sku?: T;
+                    price?: T;
+                    compareAtPrice?: T;
+                    stock?: T;
+                    size?:
+                      | T
+                      | {
+                          title?: T;
+                          value?: T;
+                        };
+                    color?:
+                      | T
+                      | {
+                          title?: T;
+                          value?: T;
+                        };
+                  };
+              id?: T;
+            };
+        createdOn?: T;
+        lastModified?: T;
+      };
+  skipSync?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
