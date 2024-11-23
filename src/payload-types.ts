@@ -12,6 +12,7 @@
  */
 export type CartItems =
   | {
+      product?: (string | null) | Product;
       quantity?: number | null;
       variant?: {
         id?: string | null;
@@ -397,6 +398,7 @@ export interface User {
   id: string;
   name?: string | null;
   roles?: ('admin' | 'customer')[] | null;
+  purchases?: (string | Product)[] | null;
   cart?: {
     items?: CartItems;
     createdOn?: string | null;
@@ -413,6 +415,68 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  compareAtPrice?: number | null;
+  variants?:
+    | {
+        size: string | Size;
+        color: string | Color;
+        price: number;
+        compareAtPrice?: number | null;
+        sku: string;
+        stock?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  publishedOn?: string | null;
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
+  priceJSON?: string | null;
+  enablePaywall?: boolean | null;
+  paywall?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
+  categories?: (string | Category)[] | null;
+  relatedProducts?: (string | Product)[] | null;
+  slug?: string | null;
+  skipSync?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes".
+ */
+export interface Size {
+  id: string;
+  title: string;
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors".
+ */
+export interface Color {
+  id: string;
+  title: string;
+  value: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -606,42 +670,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  compareAtPrice?: number | null;
-  variants?:
-    | {
-        price: number;
-        compareAtPrice?: number | null;
-        sku: string;
-        stock?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  publishedOn?: string | null;
-  images?:
-    | {
-        image: string | Media;
-        id?: string | null;
-      }[]
-    | null;
-  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
-  priceJSON?: string | null;
-  enablePaywall?: boolean | null;
-  paywall?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
-  categories?: (string | Category)[] | null;
-  skipSync?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
@@ -683,28 +711,6 @@ export interface Order {
     country: string;
     isDefault?: boolean | null;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sizes".
- */
-export interface Size {
-  id: string;
-  title: string;
-  value: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "colors".
- */
-export interface Color {
-  id: string;
-  title: string;
-  value: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1077,12 +1083,14 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   roles?: T;
+  purchases?: T;
   cart?:
     | T
     | {
         items?:
           | T
           | {
+              product?: T;
               quantity?: T;
               variant?:
                 | T
@@ -1133,6 +1141,8 @@ export interface ProductsSelect<T extends boolean = true> {
   variants?:
     | T
     | {
+        size?: T;
+        color?: T;
         price?: T;
         compareAtPrice?: T;
         sku?: T;
@@ -1289,6 +1299,8 @@ export interface ProductsSelect<T extends boolean = true> {
             };
       };
   categories?: T;
+  relatedProducts?: T;
+  slug?: T;
   skipSync?: T;
   updatedAt?: T;
   createdAt?: T;

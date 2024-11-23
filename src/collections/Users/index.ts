@@ -69,6 +69,16 @@ const Users: CollectionConfig = {
       },
     },
     {
+      name: 'purchases',
+      label: 'Purchases',
+      type: 'relationship',
+      relationTo: 'products',
+      hasMany: true,
+      hooks: {
+        beforeChange: [resolveDuplicatePurchases],
+      },
+    },
+    {
       label: 'Cart',
       name: 'cart',
       type: 'group',
@@ -79,6 +89,11 @@ const Users: CollectionConfig = {
           type: 'array',
           interfaceName: 'CartItems',
           fields: [
+            {
+              name: 'product',
+              type: 'relationship',
+              relationTo: 'products',
+            },
             {
               name: 'quantity',
               type: 'number',

@@ -23,7 +23,7 @@ const Products: CollectionConfig = {
   },
   hooks: {
     beforeChange: [],
-    afterChange: [revalidateProduct],
+    // afterChange: [revalidateProduct],
     // afterRead: [populateArchiveBlock],
     afterDelete: [deleteProductFromCarts],
   },
@@ -63,6 +63,20 @@ const Products: CollectionConfig = {
       label: 'Variants',
       type: 'array',
       fields: [
+        {
+          name: 'size',
+          label: 'Size',
+          type: 'relationship',
+          relationTo: 'sizes', // Reference to the sizes collection
+          required: true,
+        },
+        {
+          name: 'color',
+          label: 'Color',
+          type: 'relationship',
+          relationTo: 'colors', // Reference to the colors collection
+          required: true,
+        },
         {
           name: 'price',
           label: 'Price',
@@ -172,6 +186,20 @@ const Products: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'relatedProducts',
+      type: 'relationship',
+      relationTo: 'products',
+      hasMany: true,
+      filterOptions: ({ id }) => {
+        return {
+          id: {
+            not_in: [id],
+          },
+        }
+      },
+    },
+    slugField()[0],
     {
       name: 'skipSync',
       label: 'Skip Sync',
