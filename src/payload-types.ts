@@ -434,6 +434,12 @@ export interface Product {
         compareAtPrice?: number | null;
         sku: string;
         stock?: number | null;
+        images?:
+          | {
+              image: string | Media;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1147,6 +1153,12 @@ export interface ProductsSelect<T extends boolean = true> {
         compareAtPrice?: T;
         sku?: T;
         stock?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
         id?: T;
       };
   publishedOn?: T;

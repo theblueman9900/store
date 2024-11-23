@@ -99,6 +99,18 @@ const Products: CollectionConfig = {
           label: 'Stock',
           type: 'number',
         },
+        {
+          name: 'images',
+          type: 'array',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
       ],
     },
     {
