@@ -1,4 +1,4 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, ArchiveBlock as ArchiveBlockProps, Product } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
@@ -17,6 +17,7 @@ export const ArchiveBlock: React.FC<
   const limit = limitFromProps || 3
 
   let posts: Post[] = []
+  let products: Product[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayloadHMR({ config: configPromise })
@@ -41,7 +42,23 @@ export const ArchiveBlock: React.FC<
         : {}),
     })
 
+    const fetchedProducts = await payload.find({
+      collection: 'products',
+      depth: 1,
+      limit,
+      ...(flattenedCategories && flattenedCategories.length > 0
+        ? {
+            where: {
+              categories: {
+                in: flattenedCategories,
+              },
+            },
+          }
+        : {}),
+    })
+
     posts = fetchedPosts.docs
+    products = fetchedProducts.docs
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
@@ -49,6 +66,13 @@ export const ArchiveBlock: React.FC<
       }) as Post[]
 
       posts = filteredSelectedPosts
+
+      const filteredSelectedProducts = selectedDocs.map((product) => {
+        if (typeof product.value === 'object') return product.value
+      }) as Product[]
+
+      products = filteredSelectedProducts
+
     }
   }
 
@@ -59,7 +83,7 @@ export const ArchiveBlock: React.FC<
           <RichText className="ml-0 max-w-[48rem]" content={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+      <CollectionArchive posts={posts} products={products} />
     </div>
   )
 }
