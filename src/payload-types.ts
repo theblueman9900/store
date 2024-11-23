@@ -42,6 +42,10 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    products: Product;
+    orders: Order;
+    sizes: Size;
+    colors: Color;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -56,6 +60,10 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    sizes: SizesSelect<false> | SizesSelect<true>;
+    colors: ColorsSelect<false> | ColorsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -325,6 +333,7 @@ export interface ArchiveBlock {
 export interface Category {
   id: string;
   title: string;
+  media?: (string | null) | Media;
   parent?: (string | null) | Category;
   breadcrumbs?:
     | {
@@ -597,6 +606,110 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  compareAtPrice?: number | null;
+  variants?:
+    | {
+        price: number;
+        compareAtPrice?: number | null;
+        sku: string;
+        stock?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  publishedOn?: string | null;
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
+  priceJSON?: string | null;
+  enablePaywall?: boolean | null;
+  paywall?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock)[] | null;
+  categories?: (string | Category)[] | null;
+  skipSync?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  orderedBy?: (string | null) | User;
+  total: number;
+  items?:
+    | {
+        product: string | Product;
+        price?: number | null;
+        quantity?: number | null;
+        variant?: {
+          id?: string | null;
+          sku?: string | null;
+          price?: number | null;
+          compareAtPrice?: number | null;
+          stock?: number | null;
+          size?: {
+            title?: string | null;
+            value?: string | null;
+          };
+          color?: {
+            title?: string | null;
+            value?: string | null;
+          };
+        };
+        id?: string | null;
+      }[]
+    | null;
+  address: {
+    user: string | User;
+    name: string;
+    phone: string;
+    email: string;
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    isDefault?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes".
+ */
+export interface Size {
+  id: string;
+  title: string;
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors".
+ */
+export interface Color {
+  id: string;
+  title: string;
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -689,6 +802,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: string | Order;
+      } | null)
+    | ({
+        relationTo: 'sizes';
+        value: string | Size;
+      } | null)
+    | ({
+        relationTo: 'colors';
+        value: string | Color;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -928,6 +1057,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  media?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -990,6 +1120,252 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  price?: T;
+  compareAtPrice?: T;
+  variants?:
+    | T
+    | {
+        price?: T;
+        compareAtPrice?: T;
+        sku?: T;
+        stock?: T;
+        id?: T;
+      };
+  publishedOn?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  layout?:
+    | T
+    | {
+        cta?:
+          | T
+          | {
+              richText?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        content?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    size?: T;
+                    richText?: T;
+                    enableLink?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        mediaBlock?:
+          | T
+          | {
+              position?: T;
+              media?: T;
+              id?: T;
+              blockName?: T;
+            };
+        archive?:
+          | T
+          | {
+              introContent?: T;
+              populateBy?: T;
+              relationTo?: T;
+              categories?: T;
+              limit?: T;
+              selectedDocs?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  priceJSON?: T;
+  enablePaywall?: T;
+  paywall?:
+    | T
+    | {
+        cta?:
+          | T
+          | {
+              richText?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        content?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    size?: T;
+                    richText?: T;
+                    enableLink?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                          appearance?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        mediaBlock?:
+          | T
+          | {
+              position?: T;
+              media?: T;
+              id?: T;
+              blockName?: T;
+            };
+        archive?:
+          | T
+          | {
+              introContent?: T;
+              populateBy?: T;
+              relationTo?: T;
+              categories?: T;
+              limit?: T;
+              selectedDocs?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  categories?: T;
+  skipSync?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderedBy?: T;
+  total?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        price?: T;
+        quantity?: T;
+        variant?:
+          | T
+          | {
+              id?: T;
+              sku?: T;
+              price?: T;
+              compareAtPrice?: T;
+              stock?: T;
+              size?:
+                | T
+                | {
+                    title?: T;
+                    value?: T;
+                  };
+              color?:
+                | T
+                | {
+                    title?: T;
+                    value?: T;
+                  };
+            };
+        id?: T;
+      };
+  address?:
+    | T
+    | {
+        user?: T;
+        name?: T;
+        phone?: T;
+        email?: T;
+        street?: T;
+        city?: T;
+        state?: T;
+        postalCode?: T;
+        country?: T;
+        isDefault?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sizes_select".
+ */
+export interface SizesSelect<T extends boolean = true> {
+  title?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "colors_select".
+ */
+export interface ColorsSelect<T extends boolean = true> {
+  title?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
