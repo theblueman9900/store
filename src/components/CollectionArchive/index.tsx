@@ -34,8 +34,8 @@ export const CollectionArchive: React.FC<Props> = (props) => {
           {products?.map((result, index) => {
             if (typeof result === 'object' && result !== null) {
               return (
-                <div className="col-span-4" key={index}>
-                  <ProductCard className="h-full" doc={result} relationTo="products" showCategories />
+                <div className="col-span-3" key={index}>
+                  <ProductCard className="h-full" doc={result} relationTo="products" />
                 </div>
               )
             }
