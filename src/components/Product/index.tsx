@@ -27,6 +27,7 @@ export const ProductCard: React.FC<{
   const href = `/${relationTo}/${slug}`
 
   const [price, setPrice] = useState<any>({})
+  const [showDescription, setShowDescription] = useState<any>(false)
 
   useEffect(() => {
     // setPrice(priceFromJSON(priceJSON))
@@ -57,21 +58,31 @@ export const ProductCard: React.FC<{
               </h3>
             </div>
           )}
-          {description && (
+          {description && showDescription && (
             <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>
           )}
-          <div>
+          <div className="flex justify-between flex-col ">
             {doc?.compareAtPrice && doc.compareAtPrice != doc.price && doc.compareAtPrice > 0 && (
-              <span>
-                {price?.currency}
-                {doc?.compareAtPrice?.toFixed(2)}
+              <span className="line-through text-sm">
+                {price?.currency} {doc?.compareAtPrice?.toFixed(2)}
               </span>
             )}
 
-            <span>
-              {price?.currency}
-              {doc?.price?.toFixed(2)}
-            </span>
+            <div className="flex justify-between">
+              <span className="text-lg font-semibold">
+                {price?.currency} {doc?.price?.toFixed(2)}
+              </span>
+              {doc?.compareAtPrice && doc.compareAtPrice != doc.price && (
+                <div
+                  className="border py-1 px-2 border-border rounded-lg overflow-hidden bg-card"
+                  style={{
+                    borderRadius: '1rem',
+                  }}
+                >
+                  Sale
+                </div>
+              )}
+            </div>
           </div>
           {showCategories && hasCategories && (
             <div className="uppercase text-sm mb-4">

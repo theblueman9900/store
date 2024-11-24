@@ -12,7 +12,16 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo,
+  } = props
+  console.log('🚀 ~ >= ~ relationTo:', relationTo)
 
   const limit = limitFromProps || 3
 
@@ -27,52 +36,54 @@ export const ArchiveBlock: React.FC<
       else return category
     })
 
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
-      depth: 1,
-      limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
+    if (relationTo === 'posts') {
+      const fetchedPosts = await payload.find({
+        collection: 'posts',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
               },
-            },
-          }
-        : {}),
-    })
-
-    const fetchedProducts = await payload.find({
-      collection: 'products',
-      depth: 1,
-      limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
+            }
+          : {}),
+      })
+      posts = fetchedPosts.docs
+    } else {
+      const fetchedProducts = await payload.find({
+        collection: 'products',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
               },
-            },
-          }
-        : {}),
-    })
-
-    posts = fetchedPosts.docs
-    products = fetchedProducts.docs
+            }
+          : {}),
+      })
+      products = fetchedProducts.docs
+    }
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Post[]
+      if (relationTo === 'posts') {
+        const filteredSelectedPosts = selectedDocs.map((post) => {
+          if (typeof post.value === 'object') return post.value
+        }) as Post[]
 
-      posts = filteredSelectedPosts
+        posts = filteredSelectedPosts
+      } else {
+        const filteredSelectedProducts = selectedDocs.map((product) => {
+          if (typeof product.value === 'object') return product.value
+        }) as Product[]
 
-      const filteredSelectedProducts = selectedDocs.map((product) => {
-        if (typeof product.value === 'object') return product.value
-      }) as Product[]
-
-      products = filteredSelectedProducts
-
+        products = filteredSelectedProducts
+      }
     }
   }
 
