@@ -47,7 +47,7 @@ export default async function Product({ params: paramsPromise }: Args) {
   console.log('🚀 ~ Product ~ layout:', layout)
 
   return (
-    <>
+    <div>
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -74,7 +74,7 @@ export default async function Product({ params: paramsPromise }: Args) {
           />
         )}
       </div>
-    </>
+    </div>
   )
 }
 
