@@ -1,10 +1,11 @@
+'use client'
+
 import React from 'react'
 
-import { HeaderThemeProvider } from './HeaderTheme'
-import { ThemeProvider } from './Theme'
-import { AuthProvider } from './Auth'
+import { AuthProvider } from '../_providers/Auth'
+import { CartProvider } from '../_providers/Cart'
 import { FilterProvider } from './Filter'
-import { CartProvider } from './Cart'
+import { ThemeProvider } from './Theme'
 
 export const Providers: React.FC<{
   children: React.ReactNode
@@ -13,9 +14,7 @@ export const Providers: React.FC<{
     <ThemeProvider>
       <AuthProvider>
         <FilterProvider>
-          <CartProvider>
-            <HeaderThemeProvider>{children}</HeaderThemeProvider>
-          </CartProvider>
+          <CartProvider>{children}</CartProvider>
         </FilterProvider>
       </AuthProvider>
     </ThemeProvider>

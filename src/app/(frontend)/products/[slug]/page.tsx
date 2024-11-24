@@ -1,29 +1,29 @@
 import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
+import { RelatedProducts } from '@/blocks/RelatedProducts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
+import type { Product } from '@/payload-types'
 
-import type { Post } from '@/payload-types'
-
-import { PostHero } from '@/heros/PostHero'
+import { ProductHero } from '@/heros/ProductHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import { Blocks } from '@/components/Blocks'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const posts = await payload.find({
-    collection: 'posts',
+  const products = await payload.find({
+    collection: 'products',
     draft: false,
     limit: 1000,
     overrideAccess: false,
   })
 
-  const params = posts.docs.map(({ slug }) => {
+  const params = products.docs.map(({ slug }) => {
     return { slug }
   })
 
@@ -36,12 +36,13 @@ type Args = {
   }>
 }
 
-export default async function Post({ params: paramsPromise }: Args) {
+export default async function Product({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
-  const url = '/posts/' + slug
-  const post = await queryPostBySlug({ slug })
+  const url = '/products/' + slug
+  const product = await queryProductBySlug({ slug })
 
-  if (!post) return <PayloadRedirects url={url} />
+  if (!product) return <PayloadRedirects url={url} />
+  const { relatedProducts, layout } = product
 
   return (
     <article className="pt-16 pb-16">
@@ -50,21 +51,20 @@ export default async function Post({ params: paramsPromise }: Args) {
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      <PostHero post={post} />
-
+      <ProductHero product={product} />
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container lg:mx-0 lg:grid lg:grid-cols-[1fr_48rem_1fr] grid-rows-[1fr]">
-          <RichText
+          {/* <RichText
             className="lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[1fr]"
-            content={post.content}
+            content={product.content}
             enableGutter={false}
-          />
+          /> */}
         </div>
 
-        {post.relatedPosts && post.relatedPosts.length > 0 && (
-          <RelatedPosts
+        {product.relatedProducts && product.relatedProducts.length > 0 && (
+          <RelatedProducts
             className="mt-12"
-            docs={post.relatedPosts.filter((post) => typeof post === 'object')}
+            docs={product.relatedProducts.filter((product) => typeof product === 'object')}
           />
         )}
       </div>
@@ -72,20 +72,13 @@ export default async function Post({ params: paramsPromise }: Args) {
   )
 }
 
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
-
-  return generateMeta({ doc: post })
-}
-
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryProductBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayloadHMR({ config: configPromise })
 
   const result = await payload.find({
-    collection: 'posts',
+    collection: 'products',
     draft,
     limit: 1,
     overrideAccess: draft,
