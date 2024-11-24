@@ -13,6 +13,7 @@ import { ProductHero } from '@/heros/ProductHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { Blocks } from '@/components/Blocks'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -43,15 +44,20 @@ export default async function Product({ params: paramsPromise }: Args) {
 
   if (!product) return <PayloadRedirects url={url} />
   const { relatedProducts, layout } = product
+  console.log('🚀 ~ Product ~ layout:', layout)
 
   return (
-    <article className="pt-16 pb-16">
+    <>
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
-      <ProductHero product={product} />
+      <div className='my-16'>
+        <ProductHero product={product} />
+      </div>
+      {layout && <RenderBlocks blocks={layout} />}
+
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container lg:mx-0 lg:grid lg:grid-cols-[1fr_48rem_1fr] grid-rows-[1fr]">
           {/* <RichText
@@ -68,7 +74,7 @@ export default async function Product({ params: paramsPromise }: Args) {
           />
         )}
       </div>
-    </article>
+    </>
   )
 }
 
