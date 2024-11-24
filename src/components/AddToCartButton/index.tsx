@@ -19,10 +19,6 @@ export const AddToCartButton: React.FC<{
   const { product, quantity = 1, variant, className, appearance = 'primary' } = props
 
   const { cart, addItemToCart, isProductInCart, hasInitializedCart } = useCart()
-  console.log("🚀 ~ hasInitializedCart:", hasInitializedCart)
-  console.log("🚀 ~ addItemToCart:", addItemToCart)
-  console.log("🚀 ~ cart:", cart)
-  console.log("🚀 ~ isProductInCart:", isProductInCart)
 
   const [isInCart, setIsInCart] = useState<boolean>(false)
   const router = useRouter()
