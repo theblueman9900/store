@@ -1,5 +1,6 @@
-import type { AfterChangeHook } from 'payload/dist/collections/config/types'
 
+
+import { AfterChangeHook } from 'node_modules/payload/dist/collections/config/types'
 import type { Order } from '../../../payload-types'
 
 export const clearUserCart: AfterChangeHook<Order> = async ({ doc, req, operation }) => {

@@ -2,10 +2,9 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { Category } from '../@/payload-types'
-import { useFilter } from '../@/providers/Filter'
-
 import classes from './index.module.scss'
+import { Category, Media } from '@/payload-types'
+import { useFilter } from '@/providers/Filter'
 
 type CategoryCardProps = {
   category: Category

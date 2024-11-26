@@ -66,7 +66,7 @@ export const Blocks: React.FC<{
 
             if (Block) {
               return (
-                  <VerticalPadding top={paddingTop} bottom={paddingBottom}>
+                  <VerticalPadding top={paddingTop} bottom={paddingBottom} key={index}>
                     <Block
                       // @ts-expect-error
                       id={toKebabCase(blockName)}

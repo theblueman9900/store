@@ -146,6 +146,7 @@ export interface Page {
             } | null;
             url?: string | null;
             label: string;
+            icon?: (string | null) | Media;
             appearance?: ('default' | 'outline') | null;
           };
           id?: string | null;
@@ -231,6 +232,7 @@ export interface CallToActionBlock {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
           appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
@@ -273,6 +275,7 @@ export interface ContentBlock {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
           appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
@@ -917,6 +920,7 @@ export interface PagesSelect<T extends boolean = true> {
                     reference?: T;
                     url?: T;
                     label?: T;
+                    icon?: T;
                     appearance?: T;
                   };
               id?: T;
@@ -941,6 +945,7 @@ export interface PagesSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -965,6 +970,7 @@ export interface PagesSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -1192,6 +1198,7 @@ export interface ProductsSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -1216,6 +1223,7 @@ export interface ProductsSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -1264,6 +1272,7 @@ export interface ProductsSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -1288,6 +1297,7 @@ export interface ProductsSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                           label?: T;
+                          icon?: T;
                           appearance?: T;
                         };
                     id?: T;
@@ -1637,6 +1647,7 @@ export interface Header {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
         };
         id?: string | null;
       }[]
@@ -1661,6 +1672,7 @@ export interface Footer {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
         };
         id?: string | null;
       }[]
@@ -1684,6 +1696,7 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
             };
         id?: T;
       };
@@ -1707,6 +1720,7 @@ export interface FooterSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
             };
         id?: T;
       };

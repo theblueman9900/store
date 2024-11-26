@@ -1,5 +1,5 @@
-import type { PayloadHandler } from 'payload/config'
-import type { PayloadRequest } from 'payload/types'
+import { PayloadHandler, PayloadRequest } from "payload"
+
 const logs = process.env.LOGS_STRIPE_PROXY === '1'
 
 // use this handler to interact with a Stripe customer associated with any given user
@@ -9,7 +9,7 @@ const logs = process.env.LOGS_STRIPE_PROXY === '1'
 // GET /api/users/:id/customer
 // POST /api/users/:id/customer
 // body: { customer: Stripe.CustomerUpdateParams }
-export const customerProxy: PayloadHandler = async (req: PayloadRequest, res) => {
+export const customerProxy: any = async (req: PayloadRequest, res : any) => {
   if (!req.user) {
     if (logs) req.payload.logger.error({ err: `You are not authorized to access this customer` })
     res.status(401).json({ error: 'You are not authorized to access this customer' })

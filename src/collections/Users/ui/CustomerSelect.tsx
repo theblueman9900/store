@@ -1,7 +1,6 @@
+import { CopyToClipboard, Select } from '@payloadcms/ui'
+import { TextField } from 'payload'
 import * as React from 'react'
-import { Select, useFormFields } from 'payload/components/forms'
-import CopyToClipboard from 'payload/dist/admin/components/elements/CopyToClipboard'
-import { TextField } from 'payload/dist/fields/config/types'
 
 export const CustomerSelect: React.FC<TextField> = props => {
   const { name, label } = props
@@ -29,7 +28,7 @@ export const CustomerSelect: React.FC<TextField> = props => {
         </a>
         {'.'}
       </p>
-      <Select {...props} label="" options={options} />
+      <Select {...props} options={options} />
       {
         <div>
           <div>

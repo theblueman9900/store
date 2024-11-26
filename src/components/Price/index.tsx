@@ -52,21 +52,21 @@ export const Price: React.FC<{
   quantity?: number
   variant?: any
   button?: 'addToCart' | 'removeFromCart' | false
-}> = props => {
+}> = (props) => {
   const { product, product: { priceJSON } = {}, button = 'addToCart', quantity, variant } = props
 
   const [price, setPrice] = useState<{
     actualPrice: string
     withQuantity: string
   }>(() => ({
-    actualPrice: priceFromJSON(priceJSON, variant?.price),
-    withQuantity: priceFromJSON(priceJSON, variant?.price, quantity),
+    actualPrice: priceFromJSON(priceJSON ?? '{}', variant?.price),
+    withQuantity: priceFromJSON(priceJSON ?? '{}', variant?.price, quantity),
   }))
 
   useEffect(() => {
     setPrice({
-      actualPrice: priceFromJSON(priceJSON, variant?.price),
-      withQuantity: priceFromJSON(priceJSON, variant?.price, quantity),
+      actualPrice: priceFromJSON(priceJSON ?? '{}', variant?.price),
+      withQuantity: priceFromJSON(priceJSON ?? '{}', variant?.price, quantity),
     })
   }, [priceJSON, quantity, variant])
 

@@ -1,7 +1,7 @@
+import { Select } from '@payloadcms/ui'
+import { TextField } from 'payload'
 import * as React from 'react'
-import { Select, useFormFields } from 'payload/components/forms'
-import CopyToClipboard from 'payload/dist/admin/components/elements/CopyToClipboard'
-import { TextField } from 'payload/dist/fields/config/types'
+
 
 export const ProductSelect: React.FC<TextField> = props => {
   const { name, label } = props
@@ -24,7 +24,7 @@ export const ProductSelect: React.FC<TextField> = props => {
         {`Select the related Stripe product`}
         {'.'}
       </p>
-      <Select {...props} label="" options={options} />
+      <Select {...props} options={options} />
     </div>
   )
 }
